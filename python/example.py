@@ -64,7 +64,7 @@ NOT_PHISH = [
 # use the model to predict whether the test images are Phish or not
 for test in PHISH_EXAMPLES + NOT_PHISH:
   result = clarifai.predict(test, concept_name)
-  print result['status']['message'], "%0.3f" % result['urls'][0]['score'], result['urls'][0]['url']
+  print(result['status']['message'], "%0.3f" % result['urls'][0]['score'], result['urls'][0]['url'])
 
 # Our output is the following. Your results will vary as there are some non-deterministic elements
 # of the algorithms used.

@@ -20,7 +20,8 @@ from request_helper import CuratorApiRequestHelper
 def request(name, method='GET'):
   def decorator(get_body):
     def process_request(self, *args, **kwargs):
-      argsnames = get_body.func_code.co_varnames[1:len(args)+1]
+
+      argsnames = get_body.__code__.co_varnames[1:len(args)+1]
       arguments = dict(kwargs)
       arguments.update(zip(argsnames, args))
       url = self._url_for_op(name).format(**arguments)
@@ -39,7 +40,7 @@ def request(name, method='GET'):
 
 def drop(dictionary, value=None):
   """drops items with given value"""
-  return {k: v for k, v in dictionary.iteritems() if v != value}
+  return {k: v for k, v in dictionary.items() if v != value}
 
 
 class CuratorApiError(ApiError):
@@ -74,7 +75,8 @@ class CuratorApiClient(ClarifaiApi):
     self._urls[op] = '/'.join([self._base_url, API_VERSION, path])
 
   def check_status(self, raw_response):
-    response = json.loads(raw_response)
+
+    response = json.loads(raw_response.decode('utf-8'))
     try:
       ok = (response['status']['status'] == 'OK')
     except:
